@@ -14,38 +14,33 @@ const { NotImplementedError } = require("../extensions/index.js");
  *
  */
 function transform(arr) {
-  // throw new NotImplementedError('Not implemented');
-  let newArr = arr;
-  if (newArr instanceof Array === false) {
+  if (arr instanceof Array === false) {
     throw new Error("'arr' parameter must be an instance of the Array!");
   }
+  let newArr = arr.slice();
   for (let i = 0; i < newArr.length; i++) {
-    if (arr.includes("--discrard-next") || arr.includes("--discrard-prev")) {
-      return arr;
-    }
-    if (newArr[i] === "--discard-next" && typeof newArr[i + 1] === "number") {
-      newArr.splice(i + 1, 1);
-    }
     if (newArr[i] === "--discard-prev" && i !== 0) {
       newArr.splice(i - 1, 1);
     }
-    if (newArr[i] === "--double-next" && typeof newArr[i + 1] === "number") {
-      newArr.splice(i, 1, newArr[i + 1]);
+    if (newArr[i] === "--discard-next") {
+      newArr.splice(i + 1, 1);
     }
     if (newArr[i] === "--double-prev" && i !== 0) {
       newArr.splice(i, 1, newArr[i - 1]);
     }
+    if (newArr[i] === "--double-next") {
+      newArr.splice(i, 1, newArr[i + 1]);
+    }
   }
-  // for (let i = 0; i < arr.length; i++) {}
   newArr = newArr.filter(
     (item) =>
       item !== "--double-prev" &&
       item !== "--double-next" &&
       item !== "--discard-prev" &&
-      item !== "--discard-next"
+      item !== "--discard-next" &&
+      item !== undefined
   );
   return newArr;
-  // remove line with error and write your code here
 }
 
 module.exports = {
